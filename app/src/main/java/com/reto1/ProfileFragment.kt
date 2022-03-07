@@ -29,4 +29,9 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = ProfileFragment()
+    }
 }
