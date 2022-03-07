@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/outline_home_black_24dp"
+        android:title="Home" />
+    <item
+        android:icon="@drawable/outline_library_add_black_24dp"
+        android:title="Publicar" />
+    <item
+        android:icon="@drawable/outline_circle_black_24dp"
+        android:title="Perfil" />
+</menu>
