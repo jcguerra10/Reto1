@@ -25,19 +25,17 @@ class ControllerActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
 
-            if (menuItem.itemId == R.id.home) {
-                showFragment(homeFragment)
-            } else if (menuItem.itemId == R.id.profile) {
-                showFragment(profileFragment)
-            } else if (menuItem.itemId == R.id.publish) {
-                showFragment(publishFragment)
+            when (menuItem.itemId) {
+                R.id.home -> showFragment(homeFragment)
+                R.id.profile -> showFragment(profileFragment)
+                R.id.publish -> showFragment(publishFragment)
             }
 
             true
         }
     }
 
-    fun showFragment(fragment: Fragment) {
+    private fun showFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.fragmentControl, fragment)

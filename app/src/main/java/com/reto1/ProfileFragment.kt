@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.reto1.databinding.FragmentHomeBinding
 import com.reto1.databinding.FragmentProfileBinding
-import com.reto1.databinding.FragmentPublishBinding
 
 class ProfileFragment : Fragment() {
 
