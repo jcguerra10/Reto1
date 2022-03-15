@@ -1,7 +1,5 @@
 package com.reto1.model
 
-import java.io.File
-
 class User {
     var name: String
     var mail: String

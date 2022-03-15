@@ -19,15 +19,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/galleryBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Galería"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-            app:layout_constraintEnd_toEndOf="@+id/button4"
-            app:layout_constraintStart_toStartOf="@+id/button4"
-            app:layout_constraintTop_toBottomOf="@+id/button4" />
+            app:layout_constraintEnd_toEndOf="@+id/camaraBtn"
+            app:layout_constraintStart_toStartOf="@+id/camaraBtn"
+            app:layout_constraintTop_toBottomOf="@+id/camaraBtn" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -39,7 +39,7 @@
             tools:src="@tools:sample/avatars" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/camaraBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -72,6 +72,7 @@
             android:ems="10"
             android:hint="Descripción"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -82,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:contentDescription="-- Ciudades --"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"

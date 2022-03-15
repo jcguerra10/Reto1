@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.reto1.R
-import java.net.URL
+import java.net.URI
 
 class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePublication {
 
     private val publications = ArrayList<Publication>()
 
     init {
-        publications.add(Publication("", "Soy la maquina", "Cali", "Yo Obvio"))
+        publications.add(Publication("", "Descripcionnnnn", "Cali", "Juan Camilo Guerra"))
     }
 
     fun addPublication(newPublication: Publication) {
