@@ -9,10 +9,11 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.reto1.databinding.ActivityMainBinding
 import com.reto1.model.UserAdapter
+import com.reto1.model.UserController
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var userController: UserController
 
     private lateinit var binding: ActivityMainBinding
 
@@ -27,13 +28,13 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE), 1)
 
-        userAdapter = UserAdapter()
+        userController = UserController()
 
         binding.logInBtn.setOnClickListener {
             var mail = binding.editTextTextPersonName.text.toString()
             var pass = binding.editTextTextPassword.text.toString()
 
-            if (userAdapter.verifyUser(mail, pass)) {
+            if (userController.verifyUser(mail, pass)) {
                 val inte = Intent(this, ControllerActivity::class.java)
                 startActivity(inte)
             } else {

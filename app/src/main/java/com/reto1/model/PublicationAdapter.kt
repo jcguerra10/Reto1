@@ -9,17 +9,16 @@ import java.net.URI
 
 class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePublication {
 
-    private val publications = ArrayList<Publication>()
+    private var publicationController = PublicationController()
+    private var publications = ArrayList<Publication>()
 
     init {
-        publications.add(Publication("", "Descripcionnnnn", "Cali", "Juan Camilo Guerra"))
-    }
-
-    fun addPublication(newPublication: Publication) {
-        publications.add(newPublication)
+        //publications.add(Publication("", "Descripcionnnnn", "Cali", "Juan Camilo Guerra"))
+        publications = publicationController.getPublications()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicationView {
+        publications = publicationController.getPublications()
         val inflater = LayoutInflater.from(parent.context)
         val row = inflater.inflate(R.layout.item_publication, parent, false)
         val publicationView = PublicationView(row)
@@ -41,5 +40,13 @@ class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePubli
 
     override fun onDelete(publication: Publication?) {
         Log.d("onDelete ", publication?.author.toString())
+    }
+
+    fun setPublications(publicationController: PublicationController) {
+        this.publicationController = publicationController
+    }
+
+    fun refresh() {
+        publications = publicationController.getPublications();
     }
 }

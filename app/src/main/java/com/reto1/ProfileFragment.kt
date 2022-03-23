@@ -18,12 +18,17 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import com.reto1.databinding.FragmentProfileBinding
+import com.reto1.model.PublicationController
+import com.reto1.model.UserController
 import java.io.File
 
 class ProfileFragment : Fragment() {
 
     private var _binding:FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var publicationController: PublicationController
+    private lateinit var userController: UserController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,5 +69,10 @@ class ProfileFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = ProfileFragment()
+    }
+
+    fun setControllers(publicationController: PublicationController, userController: UserController) {
+        this.publicationController = publicationController
+        this.userController = userController
     }
 }
