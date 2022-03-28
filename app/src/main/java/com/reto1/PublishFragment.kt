@@ -95,6 +95,8 @@ class PublishFragment : Fragment() {
             Log.e(">>>", "")
             if (binding.descriptionTxt.text.toString().compareTo("") != 0  || binding.ciudadSpinner.selectedItemPosition != 0) {
                 publicationController.addPublication(Publication("", binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(),userController.getActualUser().name+""))
+                binding.descriptionTxt.text.clear()
+                binding.ciudadSpinner.setSelection(0)
                 Toast.makeText(requireContext(), "Se ha creado" , Toast.LENGTH_SHORT).show()
             }
         }

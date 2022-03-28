@@ -17,12 +17,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
+import com.reto1.databinding.FragmentNameChangeBinding
 import com.reto1.databinding.FragmentProfileBinding
 import com.reto1.model.PublicationController
 import com.reto1.model.UserController
 import java.io.File
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment() , NameChangeFragment.OnListener {
 
     private var _binding:FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -63,7 +64,9 @@ class ProfileFragment : Fragment() {
         }
 
         binding.editNameBtn.setOnClickListener {
-
+            val dialog = NameChangeFragment()
+            dialog.listener = this
+            activity?.supportFragmentManager?.let { it1 -> dialog.show(it1, "nameChange") }
         }
     }
 
@@ -80,5 +83,10 @@ class ProfileFragment : Fragment() {
     fun setControllers(publicationController: PublicationController, userController: UserController) {
         this.publicationController = publicationController
         this.userController = userController
+    }
+
+    override fun onListener(name: String) {
+        binding.textView.text = name
+        userController.getActualUser().name = name
     }
 }
