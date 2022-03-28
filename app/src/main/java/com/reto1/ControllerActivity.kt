@@ -29,6 +29,12 @@ class ControllerActivity : AppCompatActivity() {
 
         desSerialized()
 
+        val bundle = intent.extras
+        val actualUser = bundle?.getInt("actualUser")
+        if (actualUser != null) {
+            userController.setUpActualUser(actualUser)
+        }
+
         homeFragment = HomeFragment.newInstance()
         homeFragment.setControllers(publicationController, userController)
         profileFragment = ProfileFragment.newInstance()

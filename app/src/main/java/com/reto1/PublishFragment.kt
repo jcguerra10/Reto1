@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -93,7 +94,7 @@ class PublishFragment : Fragment() {
         binding.addPubBtn.setOnClickListener {
             Log.e(">>>", "")
             if (binding.descriptionTxt.text.toString().compareTo("") != 0  || binding.ciudadSpinner.selectedItemPosition != 0) {
-                publicationController.addPublication(Publication("", binding.descriptionTxt.text.toString(), binding.ciudadSpinner.toString(),"Jc"))
+                publicationController.addPublication(Publication("", binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(),userController.getActualUser().name+""))
                 Toast.makeText(requireContext(), "Se ha creado" , Toast.LENGTH_SHORT).show()
             }
         }
@@ -115,8 +116,6 @@ class PublishFragment : Fragment() {
         @JvmStatic
         fun newInstance() = PublishFragment()
     }
-
-
 
     fun setControllers(publicationController: PublicationController, userController: UserController) {
         this.publicationController = publicationController

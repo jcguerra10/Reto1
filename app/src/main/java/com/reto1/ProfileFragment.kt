@@ -53,11 +53,17 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ::onGalleryResult)
 
+        binding.textView.text = userController.getActualUser().name
+
         //Gallery
         binding.changeBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             galleryLauncher.launch(intent)
+        }
+
+        binding.editNameBtn.setOnClickListener {
+
         }
     }
 
