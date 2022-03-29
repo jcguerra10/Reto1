@@ -1,5 +1,6 @@
 package com.reto1.model
 
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -29,6 +30,9 @@ class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePubli
         val publication = publications[position]
         holder.listener = this
         holder.publication = publication
+
+        val uri = Uri.parse(publication.image)
+        holder.publiView.setImageURI(uri)
         holder.descView.setText(publication.description)
         holder.ciudView.setText(publication.ciudad)
         holder.authView.setText((publication.author))

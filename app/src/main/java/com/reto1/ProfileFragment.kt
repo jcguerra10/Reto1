@@ -1,10 +1,14 @@
 package com.reto1
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
+import android.content.Intent.CATEGORY_APP_GALLERY
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -31,6 +35,8 @@ class ProfileFragment : Fragment() , NameChangeFragment.OnListener {
     private lateinit var publicationController: PublicationController
     private lateinit var userController: UserController
 
+    private var image: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +51,9 @@ class ProfileFragment : Fragment() , NameChangeFragment.OnListener {
     private fun onGalleryResult(activityResult: ActivityResult?) {
         if (activityResult?.resultCode == Activity.RESULT_OK) {
             val uriImage = activityResult?.data?.data
+            if (uriImage != null) {
+                userController.getActualUser().profileImage = uriImage.toString()
+            }
             uriImage?.let {
                 binding.profileImage.setImageURI(uriImage)
             }
@@ -59,6 +68,7 @@ class ProfileFragment : Fragment() , NameChangeFragment.OnListener {
         //Gallery
         binding.changeBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.type = "image/*"
             galleryLauncher.launch(intent)
         }
@@ -88,5 +98,15 @@ class ProfileFragment : Fragment() , NameChangeFragment.OnListener {
     override fun onListener(name: String) {
         binding.textView.text = name
         userController.getActualUser().name = name
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val uri = Uri.parse(userController.getActualUser().profileImage)
+        if (uri != null) {
+            binding.profileImage.setImageURI(uri)
+        } else {
+            Toast.makeText(context, "No Tienes Imagen de Perfil", Toast.LENGTH_SHORT)
+        }
     }
 }

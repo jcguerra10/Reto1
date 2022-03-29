@@ -1,5 +1,7 @@
 package com.reto1.model
 
+import android.net.Uri
+
 class Publication {
     var image: String
     var description: String

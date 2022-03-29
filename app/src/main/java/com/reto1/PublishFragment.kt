@@ -3,9 +3,11 @@ package com.reto1
 import android.R
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -24,6 +26,7 @@ import com.reto1.databinding.FragmentPublishBinding
 import com.reto1.model.Publication
 import com.reto1.model.PublicationController
 import com.reto1.model.UserController
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class PublishFragment : Fragment() {
@@ -32,6 +35,7 @@ class PublishFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var file: File? = null
+    private var image: String = ""
 
     private lateinit var publicationController: PublicationController
     private lateinit var userController: UserController
@@ -52,7 +56,11 @@ class PublishFragment : Fragment() {
             val bitmap = BitmapFactory.decodeFile(file?.path)
             Log.e(">>>", file?.path+"")
             val thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.width/3, bitmap.height/3, true)
-            binding.imageView2.setImageBitmap(thumbnail)
+            val uri = activity?.let { getImageUriFromBitmap(it, thumbnail) }
+            if (uri != null) {
+                image = uri.toString()
+            }
+            binding.imageView2.setImageURI(uri)
         } else if (activityResult.resultCode == RESULT_CANCELED) {
             Toast.makeText(activity, "No Se Tomó la Foto", Toast.LENGTH_SHORT).show()
         }
@@ -62,10 +70,20 @@ class PublishFragment : Fragment() {
         if (activityResult?.resultCode == RESULT_OK) {
             val uriImage = activityResult?.data?.data
             Log.e(">>>", uriImage?.path+"")
+            if (uriImage != null) {
+                image = uriImage.toString()
+            }
             uriImage?.let {
                 binding.imageView2.setImageURI(uriImage)
             }
         }
+    }
+
+    private fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
     }
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
@@ -79,9 +97,16 @@ class PublishFragment : Fragment() {
             val uri = activity?.let { it1 -> FileProvider.getUriForFile(it1.applicationContext, it1.packageName, file!!) }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
 
-            Log.e("----", file?.path.toString())
+            Log.e("----", uri?.path.toString())
 
             cameraLauncher.launch(intent)
+        }
+
+        //Gallery
+        binding.galleryBtn.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            galleryLauncher.launch(intent)
         }
 
         val lan = arrayOf("--ciudad--", "Cali", "Bogota", "Medellin", "Pereira")
@@ -94,18 +119,12 @@ class PublishFragment : Fragment() {
         binding.addPubBtn.setOnClickListener {
             Log.e(">>>", "")
             if (binding.descriptionTxt.text.toString().compareTo("") != 0  || binding.ciudadSpinner.selectedItemPosition != 0) {
-                publicationController.addPublication(Publication("", binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(),userController.getActualUser().name+""))
+                publicationController.addPublication(Publication(image, binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(),userController.getActualUser().name+""))
                 binding.descriptionTxt.text.clear()
                 binding.ciudadSpinner.setSelection(0)
+                binding.imageView2.setImageURI(Uri.EMPTY)
                 Toast.makeText(requireContext(), "Se ha creado" , Toast.LENGTH_SHORT).show()
             }
-        }
-
-        //Gallery
-        binding.galleryBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            galleryLauncher.launch(intent)
         }
     }
 
