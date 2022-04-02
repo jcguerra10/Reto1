@@ -9,7 +9,7 @@ class PublicationController {
     }
 
     fun addPublication(newPublication: Publication) {
-        publications.add(newPublication)
+        publications.add(0, newPublication)
     }
 
     fun getPublications(): ArrayList<Publication> {

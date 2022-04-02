@@ -38,13 +38,31 @@ class MainActivity : AppCompatActivity() {
 
         userController = UserController()
         controllerActivity = ControllerActivity()
+
+
+        var message = ""
+        var bool = false
+
+        binding.keepSignedSwt?.setOnCheckedChangeListener { _, isChecked ->
+            message = if (isChecked) "Seguir Conectado:ON" else "No Seguir Conectado:OFF"
+            Toast.makeText(
+                this@MainActivity, message,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            bool = isChecked
+        }
+
+
         binding.logInBtn.setOnClickListener {
             var mail = binding.editTextTextPersonName.text.toString()
             var pass = binding.editTextTextPassword.text.toString()
+
             val intUser = userController.verifyUser(mail, pass)
             if (intUser != -1) {
                 val intent = Intent(this, ControllerActivity::class.java)
                 intent.putExtra("actualUser", intUser)
+                intent.putExtra("keepSigned", bool)
                 startActivity(intent)
 
             } else {

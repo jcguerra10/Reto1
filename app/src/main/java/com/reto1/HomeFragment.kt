@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             publicationAdapter = PublicationAdapter()
             adapter = publicationAdapter
-            publicationAdapter.setPublications(publicationController)
+            publicationAdapter.setPublications(publicationController, userController)
         }
     }
 

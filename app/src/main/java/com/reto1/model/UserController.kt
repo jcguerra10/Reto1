@@ -1,8 +1,11 @@
 package com.reto1.model
 
+import kotlin.properties.Delegates
+
 class UserController {
 
     private val users = ArrayList<User>()
+    private var activeUserId = -1
     private lateinit var activeUser: User
 
     constructor() {
@@ -29,9 +32,18 @@ class UserController {
 
     fun setUpActualUser(user: Int) {
         activeUser = users[user]
+        activeUserId = user
     }
 
     fun getActualUser(): User {
         return activeUser
+    }
+
+    fun getActualUserId(): Int {
+        return activeUserId
+    }
+
+    fun searchUser(searchUser: Int): User {
+        return users[searchUser]
     }
 }

@@ -18,5 +18,6 @@ class PublicationView (itemView: View): RecyclerView.ViewHolder(itemView) {
     val descView: TextView = itemView.findViewById(R.id.descrTxt)
     val ciudView: TextView = itemView.findViewById(R.id.ciudadTxt)
     val authView: TextView = itemView.findViewById(R.id.authTxt)
+    val timeView: TextView = itemView.findViewById(R.id.timeTxt)
 
 }

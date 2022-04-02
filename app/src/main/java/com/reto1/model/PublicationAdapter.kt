@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.reto1.R
 import java.net.URI
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePublication {
 
-    private var publicationController = PublicationController()
+    private lateinit var publicationController : PublicationController
+    private lateinit var userController: UserController
     private var publications = ArrayList<Publication>()
 
-    init {
-        //publications.add(Publication("", "Descripcionnnnn", "Cali", "Juan Camilo Guerra"))
-        publications = publicationController.getPublications()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicationView {
         publications = publicationController.getPublications()
@@ -35,7 +34,8 @@ class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePubli
         holder.publiView.setImageURI(uri)
         holder.descView.setText(publication.description)
         holder.ciudView.setText(publication.ciudad)
-        holder.authView.setText((publication.author))
+        holder.authView.setText(userController.searchUser(publication.author.toInt()).name)
+        holder.timeView.setText(publication.time)
     }
 
     override fun getItemCount(): Int {
@@ -46,8 +46,9 @@ class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePubli
         Log.d("onDelete ", publication?.author.toString())
     }
 
-    fun setPublications(publicationController: PublicationController) {
+    fun setPublications(publicationController: PublicationController, userController: UserController) {
         this.publicationController = publicationController
+        this.userController = userController
     }
 
     fun refresh() {

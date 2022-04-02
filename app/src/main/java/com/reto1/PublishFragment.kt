@@ -1,13 +1,16 @@
 package com.reto1
 
 import android.R
+import android.R.attr.data
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -15,12 +18,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.reto1.databinding.FragmentPublishBinding
 import com.reto1.model.Publication
@@ -28,6 +29,9 @@ import com.reto1.model.PublicationController
 import com.reto1.model.UserController
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.sql.Timestamp
+import java.util.*
+
 
 class PublishFragment : Fragment() {
 
@@ -69,9 +73,11 @@ class PublishFragment : Fragment() {
     private fun onGalleryResult(activityResult: ActivityResult?) {
         if (activityResult?.resultCode == RESULT_OK) {
             val uriImage = activityResult?.data?.data
+
             Log.e(">>>", uriImage?.path+"")
+
             if (uriImage != null) {
-                image = uriImage.toString()
+                //image = uriImage.toString()
             }
             uriImage?.let {
                 binding.imageView2.setImageURI(uriImage)
@@ -104,14 +110,23 @@ class PublishFragment : Fragment() {
 
         //Gallery
         binding.galleryBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            val intent: Intent
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            } else {
+                intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            }
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.type = "image/*"
             galleryLauncher.launch(intent)
         }
 
         val lan = arrayOf("--ciudad--", "Cali", "Bogota", "Medellin", "Pereira")
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item , lan)
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item , lan)
 
         binding.ciudadSpinner.adapter = adapter
 
@@ -119,7 +134,13 @@ class PublishFragment : Fragment() {
         binding.addPubBtn.setOnClickListener {
             Log.e(">>>", "")
             if (binding.descriptionTxt.text.toString().compareTo("") != 0  || binding.ciudadSpinner.selectedItemPosition != 0) {
-                publicationController.addPublication(Publication(image, binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(),userController.getActualUser().name+""))
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH) + 1
+                val day = c.get(Calendar.DAY_OF_MONTH)
+
+                val currentTime = "$year/$month/$day"
+                publicationController.addPublication(Publication(image, binding.descriptionTxt.text.toString(), binding.ciudadSpinner.selectedItem.toString(), userController.getActualUserId().toString(), currentTime))
                 binding.descriptionTxt.text.clear()
                 binding.ciudadSpinner.setSelection(0)
                 binding.imageView2.setImageURI(Uri.EMPTY)

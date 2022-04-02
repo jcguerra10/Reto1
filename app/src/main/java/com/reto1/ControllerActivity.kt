@@ -72,10 +72,6 @@ class ControllerActivity : AppCompatActivity() {
             .apply()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun desSerialized() {
         val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
