@@ -42,6 +42,8 @@ class ControllerActivity : AppCompatActivity() {
         publishFragment = PublishFragment.newInstance()
         publishFragment.setControllers(publicationController, userController)
 
+        showFragment(homeFragment)
+
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> showFragment(homeFragment)
