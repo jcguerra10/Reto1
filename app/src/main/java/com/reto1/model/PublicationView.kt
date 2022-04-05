@@ -15,6 +15,7 @@ class PublicationView (itemView: View): RecyclerView.ViewHolder(itemView) {
     var publication: Publication? = null
 
     val publiView: ImageView = itemView.findViewById(R.id.publiImg)
+    val imagePrfView: ImageView = itemView.findViewById(R.id.imagePro)
     val descView: TextView = itemView.findViewById(R.id.descrTxt)
     val ciudView: TextView = itemView.findViewById(R.id.ciudadTxt)
     val authView: TextView = itemView.findViewById(R.id.authTxt)

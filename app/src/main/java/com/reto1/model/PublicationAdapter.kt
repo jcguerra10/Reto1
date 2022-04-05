@@ -30,12 +30,19 @@ class PublicationAdapter: RecyclerView.Adapter<PublicationView>(), OnDeletePubli
         holder.listener = this
         holder.publication = publication
 
+        var uriProfile = Uri.EMPTY
+
+        if (publication.image != null) {
+            uriProfile = Uri.parse(userController.searchUser(publication.author.toInt()).profileImage)
+        }
+
         val uri = Uri.parse(publication.image)
         holder.publiView.setImageURI(uri)
         holder.descView.setText(publication.description)
         holder.ciudView.setText(publication.ciudad)
         holder.authView.setText(userController.searchUser(publication.author.toInt()).name)
         holder.timeView.setText(publication.time)
+        holder.imagePrfView.setImageURI(uriProfile)
     }
 
     override fun getItemCount(): Int {
